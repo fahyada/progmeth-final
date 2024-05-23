@@ -1,0 +1,305 @@
+@startuml
+class input.KeyHandler {
+- boolean up
+- GamePanel gp
++ <<Create>> KeyHandler(GamePanel)
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
++ boolean isUp()
++ boolean isDown()
++ boolean isLeft()
++ boolean isRight()
++ boolean isSpacePressed()
+}
+abstract class entity.monsters.MonsterBase {
+- int hp
+- int maxHp
+- int atk
+- int range
+- Image attackUp1
+- Image attackUp2
+- Image attackDown1
+- Image attackDown2
+- Image attackLeft1
+- Image attackLeft2
+- Image attackRight1
+- Image attackRight2
++ <<Create>> MonsterBase(int,int,int,int,int,double)
++ void setRandomCoordinate()
++ void checkAttack(Player)
++ void attack(Player)
++ {abstract}Rectangle getBounds()
++ void draw(GraphicsContext,Player)
++ int getHp()
++ void setHp(int)
++ int getMaxHp()
++ void setMaxHp(int)
++ int getAtk()
++ void setAtk(int)
++ int getRange()
++ void setRange(int)
++ Image getAttackUp1()
++ void setAttackUp1(Image)
++ Image getAttackUp2()
++ void setAttackUp2(Image)
++ Image getAttackDown1()
++ void setAttackDown1(Image)
++ Image getAttackDown2()
++ void setAttackDown2(Image)
++ Image getAttackLeft1()
++ void setAttackLeft1(Image)
++ Image getAttackLeft2()
++ void setAttackLeft2(Image)
++ Image getAttackRight1()
++ void setAttackRight1(Image)
++ Image getAttackRight2()
++ void setAttackRight2(Image)
++ boolean getAttacking()
+}
+class tiles.TileManager {
+- Tile[] tile
+- int[][] mapTileNum
++ <<Create>> TileManager()
++ void getTileImage()
++ void draw(GraphicsContext)
++ Tile[] getTile()
++ void setTile(Tile[])
++ int[][] getMapTileNum()
++ void setMapTileNum(int[][])
+}
+interface Interface.IRenderable {
+~ void draw(GraphicsContext)
+}
+class entity.Player {
+- GamePanel gp
+- KeyHandler keyH
++ <<Create>> Player(GamePanel,KeyHandler)
++ void setMovementImages()
++ void setAttackImages()
++ void updateAttackArea()
++ void attack(MonsterBase)
++ void updatePosition()
++ void draw(GraphicsContext)
+}
+class logic.GameLogic {
+- MonsterField monsterField
+- Player player
++ int[] currentMonsters
+- int currentWave
+- boolean gameOver
+- boolean winMessage
++ <<Create>> GameLogic(Player)
++ void setUpGame()
++ void initializeMonster(int)
++ void update()
++ int getNumMonster(int)
++ void checkWin()
++ void setCurrentWave(int)
++ int getCurrentWave()
++ MonsterField getMonsterField()
++ void setMonsterField(MonsterField)
++ boolean isGameOver()
++ boolean isWinMessage()
++ void setGameOver(boolean)
++ void setWinMessage(boolean)
+}
+class utils.GetData {
++ {static} Image getImage(String)
++ {static} Font getFont(String,double)
+}
+class tiles.Tile {
+- Image image
+- boolean collision
++ Image getImage()
++ void setImage(Image)
++ boolean isCollision()
++ void setCollision(boolean)
+}
+class entity.monsters.MonsterStrong {
++ <<Create>> MonsterStrong()
++ Rectangle getBounds()
++ void setMovementImages()
++ void setAttackImages()
+}
+class entity.monsters.MonsterWeak {
++ <<Create>> MonsterWeak()
++ Rectangle getBounds()
++ void setMovementImages()
++ void setAttackImages()
+}
+class utils.CollisionChecker {
+- GamePanel gp
++ <<Create>> CollisionChecker(GamePanel)
++ void checkTile(Entity)
+}
+class panes.HomePane {
+- GamePanel gamePanel
++ <<Create>> HomePane()
++ Button startGameButton()
++ Button quitButton()
++ void setGamePanel(GamePanel)
+}
+class main.UI {
+- GamePanel gp
+- GraphicsContext gc
+- int commandNumEnd
+~ Font retroGaming
++ <<Create>> UI(GamePanel)
++ void draw(GraphicsContext)
++ void drawGameOverScreen()
++ void drawWinScreen()
++ int getCommandNumEnd()
++ void setCommandNumEnd(int)
+}
+class main.Main {
+- {static} StackPane root
+- {static} Scene scene
++ void start(Stage)
++ {static} void restart()
++ {static} void main(String[])
+}
+class entity.monsters.MonsterField {
+- ArrayList<MonsterBase> monsters
+- Player player
+- int monsterCount
++ <<Create>> MonsterField(Player)
++ void addMonsterWeak()
++ void addMonsterStrong()
++ void addMonsterBoss()
++ void updatePosition(MonsterBase)
++ void updateSolidArea(MonsterBase)
+- void moveMonsterAwayFromOtherMonster(MonsterBase,MonsterBase)
++ void setSprites(MonsterBase)
++ ArrayList<MonsterBase> getMonsters()
++ void setMonsters(ArrayList<MonsterBase>)
++ int getMonsterCount()
++ void setMonsterCount(int)
++ Player getPlayer()
++ void setPlayer(Player)
+}
+class panes.GamePanel {
++ {static} int tileSize
++ {static} int maxScreenCol
++ {static} int maxScreenRow
++ {static} int ScreenWidth
++ {static} int ScreenHeight
+- int FPS
+- AnimationTimer gameLoop
+- TileManager tileM
+- KeyHandler keyH
+- GameLogic gameLogic
+- Player player
+- CollisionChecker Cchecker
+- UI ui
+- MediaPlayer sound
++ <<Create>> GamePanel(double,double)
++ void startGameThread()
++ void paintComponent()
++ GameLogic getGameLogic()
++ void setGameLogic(GameLogic)
++ TileManager getTileManager()
++ CollisionChecker getCchecker()
++ UI getUi()
++ MediaPlayer getSound()
+}
+abstract class entity.Entity {
+- int hp
+- int maxHp
+- int atk
+- int range
+- double x
+- double size
+- int speed
+- Image up1
+- Image attackUp
+- Image attackEffect1
+- String direction
+- int spriteCounter
+- int spriteNum
+- Rectangle solidArea
+- Rectangle attackArea
+- boolean collisionOn
+- boolean attacking
++ <<Create>> Entity(int,int,int,int,int,double)
++ boolean isAlive()
++ void setMovementImages()
++ void setAttackImages()
++ void attack(MonsterBase)
++ void attack(Player)
++ double getX()
++ void setX(double)
++ double getY()
++ void setY(double)
++ int getSpeed()
++ void setSpeed(int)
++ Image getUp1()
++ void setUp1(Image)
++ Image getUp2()
++ void setUp2(Image)
++ Image getDown1()
++ void setDown1(Image)
++ Image getDown2()
++ void setDown2(Image)
++ Image getLeft1()
++ void setLeft1(Image)
++ Image getLeft2()
++ void setLeft2(Image)
++ Image getRight1()
++ void setRight1(Image)
++ Image getRight2()
++ void setRight2(Image)
++ String getDirection()
++ void setDirection(String)
++ int getSpriteCounter()
++ void setSpriteCounter(int)
++ int getSpriteNum()
++ void setSpriteNum(int)
++ int getHp()
++ void setHp(int)
++ int getMaxHp()
++ void setMaxHp(int)
++ int getAtk()
++ void setAtk(int)
++ int getRange()
++ void setRange(int)
++ double getSize()
++ void setSize(double)
++ Rectangle getAttackArea()
++ void setAttackArea(Rectangle)
++ Rectangle getSolidArea()
++ void setSolidArea(Rectangle)
++ Image getAttackEffect1()
++ void setAttackEffect1(Image)
++ Image getAttackEffect2()
++ void setAttackEffect2(Image)
++ Image getAttackUp()
++ void setAttackUp(Image)
++ Image getAttackDown()
++ void setAttackDown(Image)
++ Image getAttackLeft()
++ void setAttackLeft(Image)
++ Image getAttackRight()
++ void setAttackRight(Image)
++ boolean isCollisionOn()
++ void setCollisionOn(boolean)
++ boolean isAttacking()
++ void setAttacking(boolean)
+}
+class entity.monsters.MonsterBoss {
++ <<Create>> MonsterBoss()
++ Rectangle getBounds()
++ void setMovementImages()
++ void setAttackImages()
+}
+
+
+entity.Entity <|-- entity.monsters.MonsterBase
+Interface.IRenderable <|.. entity.Player
+entity.Entity <|-- entity.Player
+entity.monsters.MonsterBase <|-- entity.monsters.MonsterStrong
+entity.monsters.MonsterBase <|-- entity.monsters.MonsterWeak
+panes.VBox <|-- panes.HomePane
+javafx.application.Application <|-- main.Main
+javafx.scene.canvas.Canvas <|-- panes.GamePanel
+entity.monsters.MonsterBase <|-- entity.monsters.MonsterBoss
+@enduml
